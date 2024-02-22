@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>South African Age Calculator</title>
+</head>
+<body>
+
+<h2>ID Calculator</h2>
+
+<form onsubmit="calculateAge (event)">
+  <label for="idInput">Enter ID:</label>
+  <input type="text" id="idInput" pattern="[0-9]{13}" title="enter ID number" required>
+  <button type="submit">submit</button>
+</form>
+
+<div id="ageResult"></div>
+
+<script>
+function calculateAge(event) {
+  event.preventDefault(); // Prevents the form from submitting and refreshing the page
+  
+  var idInput = document.getElementById("idInput").value;
+  var year = parseInt(idInput.substring(0, 2));
+  var currentYear = new Date().getFullYear();
+  var prefix = (year >= currentYear % 100) ? "19" : "20";
+  var birthYear = parseInt(prefix + idInput.substring(0, 2));
+  var birthMonth = parseInt(idInput.substring(2, 4)) - 1; // Month is zero-based in Date object
+  var birthDay = parseInt(idInput.substring(4, 6));
+  
+  var today = new Date();
+  var birthDate = new Date(birthYear, birthMonth, birthDay);
+  
+  var age = today.getFullYear() - birthDate.getFullYear();
+  var monthDiff = today.getMonth() - birthDate.getMonth();
+  
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+  
+  var resultDiv = document.getElementById("ageResult");
+  resultDiv.innerHTML = "Age: " + age;
+}
+</script>
+
+</body>
+</html>
